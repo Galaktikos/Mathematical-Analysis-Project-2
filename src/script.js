@@ -155,10 +155,10 @@ function circlePos() {
 
 // Calculations
 function update() {
-    backgroundPos.x += 30 * ((Date.now() - lastTime) / 1000);
-    backgroundPos.y -= 10 * ((Date.now() - lastTime) / 1000);
-    document.getElementById("background").style.backgroundPositionX = backgroundPos.x + "px";
-    document.getElementById("background").style.backgroundPositionY = backgroundPos.y + "px";
+    backgroundPos.x += 6 * ((Date.now() - lastTime) / 1000);
+    backgroundPos.y -= 3 * ((Date.now() - lastTime) / 1000);
+    document.getElementById("background").style.backgroundPositionX = backgroundPos.x + "%";
+    document.getElementById("background").style.backgroundPositionY = backgroundPos.y + "%";
 
     if (timeFrame(0, 3600)) {
         mainCircle.radius = smoothOut(StartTime, 2000, 400, 150);
@@ -172,7 +172,7 @@ function update() {
         title2.color = "rgba(30, 30, 30, " + smoothOut(StartTime + 1800, 1000, 0, 1); + ")";
         title2.position.x = smoothOut(StartTime + 1800, 1000, canvas.width / 2 + 200, canvas.width / 2 + 90);
         document.getElementById("cover").style.background = "radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, rgba(255,255,255,1) " + smoothInOut(StartTime + 1000, 2000, 1, 90) + "%, rgba(255,255,255,1) 100%)";
-        canvas.style.boxShadow = "" + smoothOut(StartTime + 500, 2000, 0, 5) + "px " + smoothOut(StartTime + 500, 2000, 0, 5) + "px " + smoothOut(StartTime + 500, 2000, 0, 20) + "px rgba(0, 0, 0, " + smoothOut(StartTime + 500, 2000, 0, .5) + ")";
+        canvas.style.boxShadow = smoothOut(StartTime + 500, 2000, 0, 1) + "vh " + smoothOut(StartTime + 500, 2000, 0, 1) + "vh " + smoothOut(StartTime + 500, 2000, 0, 5) + "vh rgba(0, 0, 0, " + smoothOut(StartTime + 500, 2000, 0, .5) + ")";
     }
 
     if (timeFrame(3000, (startClicked) ? 0 : Infinity)) {
