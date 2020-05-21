@@ -6,6 +6,7 @@
 body {
     overflow: hidden;
     background-image: url("../images/SeamlessGrid.jpg");
+    background-size: 20%;
 }
 
 canvas {
