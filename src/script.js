@@ -1,12 +1,17 @@
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-let FPS = 60;
-let StartTime = Date.now();
-let startClicked;
-let mousePos = {
-    x: 0,
-    y: 0
-}
+let canvas = document.getElementById("canvas"),
+    ctx = canvas.getContext("2d"),
+    FPS = 60,
+    StartTime = Date.now(),
+    startClicked,
+    lastTime = Date.now(),
+    backgroundPos = {
+        x: 0,
+        y: 0
+    },
+    mousePos = {
+        x: 0,
+        y: 0
+    };
 
 //#region Objects
 let mainCircle = {
@@ -150,6 +155,11 @@ function circlePos() {
 
 // Calculations
 function update() {
+    backgroundPos.x += 30 * ((Date.now() - lastTime) / 1000);
+    backgroundPos.y -= 10 * ((Date.now() - lastTime) / 1000);
+    document.getElementById("background").style.backgroundPositionX = backgroundPos.x + "px";
+    document.getElementById("background").style.backgroundPositionY = backgroundPos.y + "px";
+
     if (timeFrame(0, 3600)) {
         mainCircle.radius = smoothOut(StartTime, 2000, 400, 150);
         mainCircle.color = "rgba(170, 170, 170, " + smoothOut(StartTime, 2000, 0, 1); + ")";
@@ -161,6 +171,8 @@ function update() {
 
         title2.color = "rgba(30, 30, 30, " + smoothOut(StartTime + 1800, 1000, 0, 1); + ")";
         title2.position.x = smoothOut(StartTime + 1800, 1000, canvas.width / 2 + 200, canvas.width / 2 + 90);
+        document.getElementById("cover").style.background = "radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, rgba(255,255,255,1) " + smoothInOut(StartTime + 1000, 2000, 1, 90) + "%, rgba(255,255,255,1) 100%)";
+        canvas.style.boxShadow = "" + smoothOut(StartTime + 500, 2000, 0, 5) + "px " + smoothOut(StartTime + 500, 2000, 0, 5) + "px " + smoothOut(StartTime + 500, 2000, 0, 20) + "px rgba(0, 0, 0, " + smoothOut(StartTime + 500, 2000, 0, .5) + ")";
     }
 
     if (timeFrame(3000, (startClicked) ? 0 : Infinity)) {
@@ -198,6 +210,8 @@ function update() {
         line3.x = smoothInOut(startClicked + 2000, 1000, 0, -mainCircle.radius);
         line4.y = smoothInOut(startClicked + 2400, 1000, 0, mainCircle.radius);
     }
+
+    lastTime = Date.now();
 }
 
 // Rendering
