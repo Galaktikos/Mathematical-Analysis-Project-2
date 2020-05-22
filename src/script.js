@@ -1,7 +1,7 @@
 // Variables
 let canvas = document.getElementById("canvas"),
     ctx = canvas.getContext("2d"),
-    FPS = 60,
+    FPS = 90,
     StartTime = Date.now(),
     step = 1,
     lastTime = Date.now(),
@@ -39,7 +39,10 @@ let mainCircle = {
 }, 
 nextButton = {
     "color": "rgba(0, 0, 0, 0)",
-    "radius": 0
+    "radius": 0,
+    "hoverTime": false,
+    "unhoverTime": Date.now(),
+    "hoverRadius": 0
 }, centerCircle = {
     "radius": 0
 }, line1 = {
@@ -122,7 +125,15 @@ lineText212 = "rgba(0, 0, 0, 0)",
 lineText213 = "rgba(0, 0, 0, 0)",
 lineText214 = "rgba(0, 0, 0, 0)",
 lineText215 = "rgba(0, 0, 0, 0)",
-lineText216 = "rgba(0, 0, 0, 0)";
+lineText216 = "rgba(0, 0, 0, 0)",
+stepText1 = "rgba(0, 0, 0, 0)",
+stepText2 = "rgba(0, 0, 0, 0)",
+stepText3 = "rgba(0, 0, 0, 0)",
+stepText4 = "rgba(0, 0, 0, 0)",
+stepText5 = "rgba(0, 0, 0, 0)",
+stepText6 = "rgba(0, 0, 0, 0)",
+stepText7 = "rgba(0, 0, 0, 0)",
+stepText8 = "rgba(0, 0, 0, 0)";
 
 // Calculations
 function update() {
@@ -172,8 +183,29 @@ function update() {
         title.color = "rgba(30, 30, 30, " + smoothOut(startClicked, 500, 1, 0) + ")";
         title2.color = "rgba(30, 30, 30, " + smoothOut(startClicked, 500, 1, 0) + ")";
 
-        nextButton.color = "rgba(0, 150, 255, " + smoothOut(startClicked + 500, 1000, 0, 1) + ")";
-        nextButton.radius = smoothOut(startClicked + 500, 1000, 0, 40);
+        if (Date.now() < startClicked + 1500) {
+            nextButton.color = "rgba(0, 150, 255, " + smoothOut(startClicked + 500, 1000, 0, 1) + ")";
+            nextButton.radius = smoothOut(startClicked + 500, 1000, 0, 40);
+        }
+
+        if (distance(mousePos.x, mousePos.y, canvas.width - 80, canvas.height - 70) < nextButton.radius)
+        {
+            if (!nextButton.hoverTime) {
+                nextButton.unhoverTime = false;
+                nextButton.hoverTime = Date.now();
+                nextButton.hoverRadius = nextButton.radius;
+            }
+
+            nextButton.radius = smoothInOut(nextButton.hoverTime, 200, nextButton.hoverRadius, 45);
+        } else {
+            if (!nextButton.unhoverTime) {
+                nextButton.hoverTime = false;
+                nextButton.unhoverTime = Date.now();
+                nextButton.hoverRadius = nextButton.radius;
+            }
+
+            nextButton.radius = smoothInOut(nextButton.unhoverTime, 400, nextButton.hoverRadius, 40);
+        }
 
         mainCircle.radius = smoothInOut(startClicked + 100, 2000, mainCircle.radius, 220);
         mainCircle.position.y = smoothInOut(startClicked + 100, 2500, mainCircle.position.y, canvas.height / 2);
@@ -184,6 +216,7 @@ function update() {
 
         lineText1 = "rgba(30, 30, 30, " + smoothOut(startClicked + 1500, 1000, 0, 1) + ")";
         lineText2 = "rgba(30, 30, 30, " + smoothOut(startClicked + 1900, 1000, 0, 1) + ")";
+        stepText1 = "rgba(30, 30, 30, " + smoothInOut(startClicked, 400, 0, 1) + ")";
 
         if (step > 1) {
             if (!stepTime[1])
@@ -191,6 +224,8 @@ function update() {
 
             lineText21 = "rgba(30, 30, 30, " + smoothOut(stepTime[1], 1000, 0, 1) + ")";
             lineText22 = "rgba(30, 30, 30, " + smoothOut(stepTime[1] + 400, 1000, 0, 1) + ")";
+            stepText1 = "rgba(30, 30, 30, " + smoothInOut(stepTime[1], 400, 1, 0) + ")";
+            stepText2 = "rgba(30, 30, 30, " + smoothInOut(stepTime[1], 400, 0, 1) + ")";
 
             if (step > 2) {
                 if (!stepTime[2])
@@ -201,6 +236,8 @@ function update() {
 
                 lineText3 = "rgba(30, 30, 30, " + smoothOut(stepTime[2] + 300, 1000, 0, 1) + ")";
                 lineText4 = "rgba(30, 30, 30, " + smoothOut(stepTime[2] + 600, 1000, 0, 1) + ")";
+                stepText2 = "rgba(30, 30, 30, " + smoothInOut(stepTime[2], 400, 1, 0) + ")";
+                stepText3 = "rgba(30, 30, 30, " + smoothInOut(stepTime[2], 400, 0, 1) + ")";
 
                 if (step > 3) {
                     if (!stepTime[3])
@@ -208,6 +245,8 @@ function update() {
 
                     lineText23 = "rgba(30, 30, 30, " + smoothOut(stepTime[3], 1000, 0, 1) + ")";
                     lineText24 = "rgba(30, 30, 30, " + smoothOut(stepTime[3] + 400, 1000, 0, 1) + ")";
+                    stepText3 = "rgba(30, 30, 30, " + smoothInOut(stepTime[3], 400, 1, 0) + ")";
+                    stepText4 = "rgba(30, 30, 30, " + smoothInOut(stepTime[3], 400, 0, 1) + ")";
                     
                     if (step > 4) {
                         if (!stepTime[4])
@@ -226,6 +265,8 @@ function update() {
                         lineText6 = "rgba(30, 30, 30, " + smoothOut(stepTime[4] + 600, 1000, 0, 1) + ")";
                         lineText7 = "rgba(30, 30, 30, " + smoothOut(stepTime[4] + 900, 1000, 0, 1) + ")";
                         lineText8 = "rgba(30, 30, 30, " + smoothOut(stepTime[4] + 1200, 1000, 0, 1) + ")";
+                        stepText4 = "rgba(30, 30, 30, " + smoothInOut(stepTime[4], 400, 1, 0) + ")";
+                        stepText5 = "rgba(30, 30, 30, " + smoothInOut(stepTime[4], 400, 0, 1) + ")";
 
                         if (step > 5) {
                             if (!stepTime[5])
@@ -235,6 +276,8 @@ function update() {
                             lineText26 = "rgba(30, 30, 30, " + smoothOut(stepTime[5] + 400, 1000, 0, 1) + ")";
                             lineText27 = "rgba(30, 30, 30, " + smoothOut(stepTime[5] + 800, 1000, 0, 1) + ")";
                             lineText28 = "rgba(30, 30, 30, " + smoothOut(stepTime[5] + 1200, 1000, 0, 1) + ")";
+                            stepText5 = "rgba(30, 30, 30, " + smoothInOut(stepTime[5], 400, 1, 0) + ")";
+                            stepText6 = "rgba(30, 30, 30, " + smoothInOut(stepTime[5], 400, 0, 1) + ")";
                             
                             if (step > 6) {
                                 if (!stepTime[6])
@@ -265,6 +308,8 @@ function update() {
                                 lineText14 = "rgba(30, 30, 30, " + smoothOut(stepTime[6] + 1800, 1000, 0, 1) + ")";
                                 lineText15 = "rgba(30, 30, 30, " + smoothOut(stepTime[6] + 2100, 1000, 0, 1) + ")";
                                 lineText16 = "rgba(30, 30, 30, " + smoothOut(stepTime[6] + 2400, 1000, 0, 1) + ")";
+                                stepText6 = "rgba(30, 30, 30, " + smoothInOut(stepTime[6], 400, 1, 0) + ")";
+                                stepText7 = "rgba(30, 30, 30, " + smoothInOut(stepTime[6], 400, 0, 1) + ")";
 
                                 if (step > 7) {
                                     if (!stepTime[7])
@@ -278,6 +323,8 @@ function update() {
                                     lineText214 = "rgba(30, 30, 30, " + smoothOut(stepTime[7] + 2000, 1000, 0, 1) + ")";
                                     lineText215 = "rgba(30, 30, 30, " + smoothOut(stepTime[7] + 2400, 1000, 0, 1) + ")";
                                     lineText216 = "rgba(30, 30, 30, " + smoothOut(stepTime[7] + 2800, 1000, 0, 1) + ")";
+                                    stepText7 = "rgba(30, 30, 30, " + smoothInOut(stepTime[7], 400, 1, 0) + ")";
+                                    stepText8 = "rgba(30, 30, 30, " + smoothInOut(stepTime[7], 400, 0, 1) + ")";
                                 }
                             }
                         }
@@ -337,6 +384,47 @@ function render() {
     ctx.textAlign = "center"
     ctx.fillStyle = "white";
     ctx.fillText("➤", canvas.width - 77 - (40 - nextButton.radius) / 9, canvas.height - 56 - (40 - nextButton.radius) / 3);
+
+    // Step
+    ctx.font = "40px Arial";
+    ctx.textAlign = "center"
+    ctx.fillStyle = "black";
+    ctx.fillText(step, 60, canvas.height - 50);
+
+    // Step Text
+    ctx.font = "30px Arial";
+    ctx.textAlign = "left"
+
+    ctx.fillStyle = stepText1;
+    ctx.fillText("The starting point of a circle can be defined as 0 degrees or", 50, 70);
+    ctx.fillText("360 degrees all around. Because of this, each half of a circle", 50, 100);
+    ctx.fillText("make up 180 degrees.", 50, 130);
+    ctx.fillStyle = stepText2;
+    ctx.fillText("In radians, pi is the unit of measurement in circles. Two pi", 50, 70);
+    ctx.fillText("radians is a full circle, making a single pi radian half of the", 50, 100);
+    ctx.fillText("circle.", 50, 130);
+    ctx.fillStyle = stepText3;
+    ctx.fillText("Splitting the circle again into quarters makes each quarter", 50, 70);
+    ctx.fillText("equal to 90 degrees.", 50, 100);
+    ctx.fillStyle = stepText4;
+    ctx.fillText("Since splitting the circle in half caused each half to be pi", 50, 70);
+    ctx.fillText("radians, the radians must now be put into fractions starting in", 50, 100);
+    ctx.fillText("pi halves, making each quarter equivilant to half a pi radian.", 50, 130);
+    ctx.fillStyle = stepText5;
+    ctx.fillText("Cutting the circle further in to eight sections makes each", 50, 70);
+    ctx.fillText("section equivilant to 45 degrees.", 50, 100);
+    ctx.fillStyle = stepText6;
+    ctx.fillText("In radians, each eigth is equal to a fourth of pi radians. One", 50, 70);
+    ctx.fillText("way to remember all of the divisions up to now is to remember", 50, 100);
+    ctx.fillText("that each division is a factor of pi over four simplified.", 50, 130);
+    ctx.fillStyle = stepText7;
+    ctx.fillText("Ignoring the previous division, the fourths can also be split", 50, 70);
+    ctx.fillText("in thirds to make each section 30 degrees instead of 45.", 50, 100);
+    ctx.fillStyle = stepText8;
+    ctx.fillText("When converting this into radians, each section is a sixth of", 50, 70);
+    ctx.fillText("pi. A way to remember this division is to remember that every", 50, 100);
+    ctx.fillText("point on the circle doesn't have a denominator of 3 since those", 50, 130);
+    ctx.fillText("points can be simplified.", 50, 160);
 
     // Center Circle
     ctx.beginPath();

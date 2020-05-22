@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    user-select: none;
 }
 
 body {
@@ -27,4 +28,26 @@ canvas {
     left: 0;
     width: 100vw;
     height: 100vh;
+}
+
+footer {
+    position: absolute;
+    background-color: #FFF;
+    width: 100vw;
+    height: 8vh;
+    bottom: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.github-icon {
+    position: absolute;
+    bottom: 2vh;
+    right: 2vh;
+    width: 5vh;
+    height: 5vh;
+}
+
+.github-icon:hover {
+    opacity: .6;
+    cursor: pointer;
 }
